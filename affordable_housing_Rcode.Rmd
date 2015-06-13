@@ -67,7 +67,7 @@ address_range <- c(2501:2520) # XXX: put the range in here
 
 addresses_as_lon_lat <- geocode(full_rentals$Address[address_range])
 
-dataset_with_lon_lat <- bind_cols
+dataset_with_lon_lat <- bind_cols(full_rentals[address_range,], addresses_as_lon_lat)
 
 write.csv(dataset_with_lon_lat, "data_lon_lat.csv")
 
