@@ -22,8 +22,8 @@ full_rentals <- full_rentals %>%
   mutate(Lat = as.numeric(Lat),
          Lon = as.numeric(Lon))
 
-full_rentals <- write.csv("Raleigh_Rental_Registration_Locations_2011_geocoded_with_lon_lat.csv", 
-                          header=TRUE, row.names=FALSE)
+write.csv(full_rentals, "Raleigh_Rental_Registration_Locations_2011_geocoded_with_lon_lat.csv", 
+          row.names=FALSE)
 
 summary(full_rentals)
 ```
