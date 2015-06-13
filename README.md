@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/CORaleigh/affordable_rental_tracking.png?label=ready&title=Ready)](https://waffle.io/CORaleigh/affordable_rental_tracking)
 # affordable_rental_tracking
 
 <a href="https://docs.google.com/document/d/1h_whowYO5vyz33_4gBjxbH1tO2SHVkW9zOFTRv9sAKo/edit#heading=h.6ih3fsc7egwx">Project Plan (Working Doc) </a>
