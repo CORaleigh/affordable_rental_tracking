@@ -4,7 +4,7 @@ Gjelt
 ========================================================
 
 We merge the available rental data from Wake county.
-```{r}
+```{r, echo=FALSE, eval=FALSE}
 #install.packages("dplyr")
 #install.packages("ggplot2")                 
 #library("magrittr")
@@ -53,9 +53,16 @@ write.csv(full_rentals,"rental_data.csv")
 
 ```
 
+# Start here together with the rental data:
+
 ## Geocoding
 We geocode 2500 records (note: pick the specific set, computed distributing amongs us since we are limited to 2500 queries)
 ```{r}
+library("dplyr")
+library("ggplot2")
+
+full_rentals <- read.csv("rental_data.csv", header=TRUE) %>% select(-X)
+
 address_range <- c(2501:2520) # XXX: put the range in here
 
 addresses_as_lon_lat <- geocode(full_rentals$Address[address_range])
