@@ -1,0 +1,77 @@
+Affordable Housing Project - CityCampNC 2015  
+Gjelt  
+6/13/2015  
+========================================================
+
+We merge the available rental data from Wake county.
+```{r}
+#install.packages("dplyr")
+#install.packages("ggplot2")                 
+#library("magrittr")
+#library("stringr")
+library("dplyr")
+library("ggplot2")
+
+aptlist <- read.csv("2011 APT list.csv", header=TRUE)
+sflist <- read.csv("2011 SF list.csv", header=TRUE)
+mhlist <- read.csv("2011 MH list.csv", header=TRUE)
+mflist <- read.csv("2011 MF list.csv", header=TRUE)
+duplexlist <- read.csv("2011 Duplex list.csv", header=TRUE)
+condolist <- read.csv("2011 Condo List.csv", header=TRUE)
+thlist <- read.csv("2011 TH list.csv", header=TRUE)
+head(aptlist)
+head(condolist)
+names(aptlist)
+names(mflist)
+names(mhlist)
+names(sflist)
+names(thlist)
+names(duplexlist)
+names(condolist) # has an extra column
+
+full_rentals <- 
+  bind_rows(aptlist, sflist) %>% 
+  bind_rows(duplexlist) %>%
+  bind_rows(mflist) %>%
+  bind_rows(mhlist) %>%
+  bind_rows(thlist) %>%
+  mutate(Condo.Complex.Name = NA) %>%
+  bind_rows(condolist)
+
+
+str(full_rentals)
+full_rentals  <- full_rentals %>%
+  mutate(Form.ID = as.factor(Form.ID), 
+         Billing.Year = as.ordered(Billing.Year),
+         Dwelling.Type= as.factor(Dwelling.Type)) %>% 
+  select(-Fees);
+
+
+full_rentals <- full_rentals %>% mutate(Address = paste(Address, "Raleigh, NC", sep=", "))
+
+write.csv(full_rentals,"rental_data.csv")
+
+```
+
+We geocode 2500 records (note: pick the specific set, computed distributing amongs us since we are limited to 2500 queries)
+```{r}
+address_range <- c(2501:2520) # XXX: put the range in here
+
+addresses_as_lon_lat <- geocode(full_rentals$Address[address_range])
+
+dataset_with_lon_lat <- bind_cols(data.frame(full_rentals[address_range,]), addresses_as_lon_lat)
+
+```
+
+We create a map of Wake County
+```{r}
+#install.packages("maps")
+#install.packages("ggmap")
+library("ggmap")
+library("maps")
+
+map('county','north carolina')
+data(us.cities)
+map.cities(us.cities, country="NC")
+```
+
