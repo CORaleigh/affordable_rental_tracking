@@ -1,0 +1,62 @@
+Affordable Housing Project - CityCampNC 2015  
+Gjelt  
+6/13/2015  
+Plot a map with the rental data
+========================================================
+
+## Maps
+### Get the longitude and latitude as separate columns
+```{r getLonLat}
+library("dplyr")
+library("ggmap")
+library("maps")
+library("stringr")
+
+full_rentals <- read.csv("Raleigh_Rental_Registration_Locations_2011_geocoded.csv", header=TRUE)
+
+full_rentals <- full_rentals %>%
+  mutate(Lat = Location.1 %>% 
+           str_extract("\\([0-9]{2}.[0-9]{14}") %>% str_replace("\\(",""),
+         Lon = Location.1 %>%  
+           str_extract("-[0-9]{2}.[0-9]{14}\\)") %>% str_replace("\\)","")) %>%
+  mutate(Lat = as.numeric(Lat),
+         Lon = as.numeric(Lon))
+
+full_rentals <- write.csv("Raleigh_Rental_Registration_Locations_2011_geocoded_with_lon_lat.csv", 
+                          header=TRUE, row.names=FALSE)
+
+summary(full_rentals)
+```
+
+
+### We create a map of Wake County
+```{r plotRentals}
+Raleigh_map <- get_map(location = "Raleigh NC", zoom = 11, 
+                       maptype = "roadmap", color = "bw") 
+                       # black & white map, color is data
+
+# Plot of rental units by type
+p <- ggmap(Raleigh_map)
+p <- p + geom_point(data = full_rentals, 
+                    aes(x = Lon, y = Lat, size = Num.Units, colour = Dwelling.Type))
+print(p)
+
+  
+#map('county','north carolina')
+#data(us.cities)
+#map.cities(us.cities, country="NC")
+
+
+# 2D density plot
+p <- ggmap(Raleigh_map)
+overlay <- 
+  stat_density2d(data = full_rentals,
+                 aes(x = Lon, y = Lat, fill = ..level.. , alpha = ..level..),
+                 size = 2, bins = 10, geom = "polygon")
+p <- p + overlay
+p <- p + scale_fill_gradient("Rental Units")
+p <- p + scale_alpha(range = c(0.4, 0.75), guide = FALSE)
+p <- p + guides(fill = guide_colorbar(barwidth = 1.5, barheight = 10))
+print(p)
+```
+

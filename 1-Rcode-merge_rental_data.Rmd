@@ -1,6 +1,7 @@
 Affordable Housing Project - CityCampNC 2015  
 Gjelt  
 6/13/2015  
+Merge data for rentals in Wake County
 ========================================================
 
 We merge the available rental data from Wake county.
@@ -60,29 +61,17 @@ We geocode 2500 records (note: pick the specific set, computed distributing amon
 ```{r}
 library("dplyr")
 library("ggplot2")
+#library("ggmap")
 
 full_rentals <- read.csv("rental_data.csv", header=TRUE) %>% select(-X)
 
 address_range <- c(2501:2520) # XXX: put the range in here
 
-addresses_as_lon_lat <- geocode(full_rentals$Address[address_range])
+addresses_as_lon_lat <- ggmap::geocode(as.character(full_rentals$Address[address_range]))
 
 dataset_with_lon_lat <- bind_cols(full_rentals[address_range,], addresses_as_lon_lat)
 
 write.csv(dataset_with_lon_lat, "data_lon_lat.csv")
 
-```
-
-## Maps
-We create a map of Wake County
-```{r}
-#install.packages("maps")
-#install.packages("ggmap")
-library("ggmap")
-library("maps")
-
-map('county','north carolina')
-data(us.cities)
-map.cities(us.cities, country="NC")
 ```
 
