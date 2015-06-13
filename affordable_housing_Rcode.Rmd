@@ -53,16 +53,20 @@ write.csv(full_rentals,"rental_data.csv")
 
 ```
 
+## Geocoding
 We geocode 2500 records (note: pick the specific set, computed distributing amongs us since we are limited to 2500 queries)
 ```{r}
 address_range <- c(2501:2520) # XXX: put the range in here
 
 addresses_as_lon_lat <- geocode(full_rentals$Address[address_range])
 
-dataset_with_lon_lat <- bind_cols(data.frame(full_rentals[address_range,]), addresses_as_lon_lat)
+dataset_with_lon_lat <- bind_cols
+
+write.csv(dataset_with_lon_lat, "data_lon_lat.csv")
 
 ```
 
+## Maps
 We create a map of Wake County
 ```{r}
 #install.packages("maps")
