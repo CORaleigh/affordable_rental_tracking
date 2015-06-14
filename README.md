@@ -3,7 +3,8 @@
 
 <a href="https://docs.google.com/document/d/1h_whowYO5vyz33_4gBjxbH1tO2SHVkW9zOFTRv9sAKo/edit#heading=h.6ih3fsc7egwx">Project Plan (Working Doc) </a>
 
-https://waffle.io/CORaleigh/affordable_rental_tracking
+Current Project Issues: https://waffle.io/CORaleigh/affordable_rental_tracking
+Example Map with 2011 Data: http://cdb.io/1HEOjWC
 
 Community Partners:
 <ul>
