@@ -1,4 +1,4 @@
-Row Labels	Sum of Num_Units		Census Tracts	Total Nbr Units	Renters	+/- Renters	Renter_Ceiling	Renter_Flr				Renters	+/- Renters
+Row Labels	Sum of Num_Units		Census Tracts	Total Nbr Units	Renters	 Renters	Renter_Ceiling	Renter_Flr				Renters	 Renters
 50100	1570		52406	2666	2069	228	2297	1841			50100	759	135
 50300	1011		53610	2663	2291	274	2565	2017			50300	1013	146
 50400	364		52301	2316	1990	198	2188	1792			50400	403	82
@@ -184,5 +184,3 @@ Grand Total	68211										53518	220	96
 											54403	464	126
 											54404	785	193
 											54500	1641	214
-													
-													
