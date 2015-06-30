@@ -1,0 +1,57 @@
+---
+title: "AffordableHousing"
+author: "Joseph Elliott"
+date: "June 29, 2015"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+Load up some data
+
+```{r, echo=FALSE}
+require(XML)
+setwd("/Users/josephelliott/Documents/Joulebug/Development/affordable_rental_tracking/Data")
+getwd()
+housingData<-read.csv("rental_data.csv")
+zillowKey <- "Your Key Here"
+```
+
+Read the housing data into some variables
+Construct the URL to call to the Zillow API
+```{r}
+constructZillowURL <- function(address) {
+  zillowAPIBaseUrl<- "http://www.zillow.com/webservice/GetSearchResults.htm"
+  stringAddress<-gsub(" ","+",as.character(address))
+  
+  queryString<-paste0("?zws-id=",zillowKey,"&address=",stringAddress,"&citystatezip=raleigh, NC&rentzestimate=true")
+  zillowFinalURL <- paste0(zillowAPIBaseUrl,queryString)
+  
+  zillowFinalURL
+}
+
+
+urls<-sapply(housingData['Address'],constructZillowURL)
+
+
+
+```
+
+Get the data out by parsing the XML
+```{r}
+
+```
+
+
+Read the data back to a CSV file
+```{r}
+
+```
+
+
+
+
+
+
+
+
