@@ -20,11 +20,14 @@ zillowKey <- "Your Key Here"
 Read the housing data into some variables
 Construct the URL to call to the Zillow API
 ```{r}
+
+#example URL:
+#http://www.zillow.com/webservice/GetSearchResults.htm?address=739+ELLINGTON+ST&citystatezip=Raleigh,NC&rentzestimate=true&zws-id=YOURKEYHERE
 constructZillowURL <- function(address) {
   zillowAPIBaseUrl<- "http://www.zillow.com/webservice/GetSearchResults.htm"
   stringAddress<-gsub(" ","+",as.character(address))
   
-  queryString<-paste0("?zws-id=",zillowKey,"&address=",stringAddress,"&citystatezip=raleigh, NC&rentzestimate=true")
+  queryString<-paste0("?zws-id=",zillowKey,"&address=",stringAddress,"&citystatezip=Raleigh,NC&rentzestimate=true")
   zillowFinalURL <- paste0(zillowAPIBaseUrl,queryString)
   
   zillowFinalURL
@@ -40,11 +43,29 @@ urls<-sapply(housingData['Address'],constructZillowURL)
 Get the data out by parsing the XML
 ```{r}
 
+index<-1
+for(url in urls){
+  xmlData<-xmlParse(url)
+  rentZestimateAmountXML<-xpathSApply(xmlData,"//response/results/result/rentzestimate/amount")
+  rentZestimateRangeLowXML<-xpathSApply(xmlData,"//response/results/result/rentzestimate/valuationRange/low")
+  rentZestimateRangeHighXML<-xpathSApply(xmlData,"//response/results/result/rentzestimate/valuationRange/high")
+  rentZestimateAmount<-xmlValue(rentZestimateAmountXML[[1]])
+  rentZestimateRangeLow<-xmlValue(rentZestimateRangeLowXML[[1]])
+  rentZestimateRangeHigh<-xmlValue(rentZestimateRangeHighXML[[1]])
+  housingData$RentZestimate[index] <- rentZestimateAmount
+  housingData$RentZestimateRangeLow[index] <- rentZestimateRangeLow
+  housingData$RentZestimateRangeHigh[index] <- rentZestimateRangeHigh
+  index <-index+1
+}
+
 ```
 
 
 Read the data back to a CSV file
 ```{r}
+
+write.csv(housingData,"zillow_rentals.csv")
+
 
 ```
 
